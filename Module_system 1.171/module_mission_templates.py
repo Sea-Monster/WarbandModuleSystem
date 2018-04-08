@@ -950,20 +950,44 @@ common_siege_check_defeat_condition = (
     (finish_mission,0),
     ])
 
+# common_battle_order_panel = (
+#   0, 0, 0, [],
+#   [
+#     (game_key_clicked, gk_view_orders),
+#     (neg|is_presentation_active, "prsnt_battle"),
+#     (start_presentation, "prsnt_battle"),
+#     ])
+#
+# common_battle_order_panel_tick = (
+#   0.1, 0, 0, [],
+#   [
+#     (is_presentation_active, "prsnt_battle"),
+#     (call_script, "script_update_order_panel_statistics_and_map"),
+#     ])
 common_battle_order_panel = (
-  0, 0, 0, [],
+  0, 0, ti_once, [],
   [
-    (game_key_clicked, gk_view_orders),
-    (neg|is_presentation_active, "prsnt_battle"),
-    (start_presentation, "prsnt_battle"),
-    ])
+    (neg | is_presentation_active, "prsnt_mini_map"),
+    (start_presentation, "prsnt_mini_map"),
+  ])
 
 common_battle_order_panel_tick = (
-  0.1, 0, 0, [],
+  0, 0, 0, [],
   [
+    (try_begin),
+    (neg | is_presentation_active, "prsnt_battle"),
+    (neg | is_presentation_active, "prsnt_mini_map"),
+    (start_presentation, "prsnt_mini_map"),
+    (try_end),
+    (try_begin),
     (is_presentation_active, "prsnt_battle"),
     (call_script, "script_update_order_panel_statistics_and_map"),
-    ])
+    (else_try),
+    (is_presentation_active, "prsnt_mini_map"),
+    (call_script, "script_update_order_panel_map"),
+    (try_end),
+  ])
+## CC
 
 common_battle_inventory = (
   ti_inventory_key_pressed, 0, 0, [],
