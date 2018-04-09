@@ -4050,6 +4050,28 @@ simple_triggers = [
          (try_end),
          (try_end),
      ]),
+    (24,
+     [
+         (try_begin),
+         (check_quest_active, "qst_organize_feast"),
+         (quest_get_slot, ":venue", "qst_organize_feast", slot_quest_target_center,),
+         (display_message, "@yanhuiinfo", 0xF5B50D),
+
+         (try_for_range, ":troop_no", active_npcs_begin, active_npcs_end),
+         (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+         (troop_get_slot, ":leaded_party", ":troop_no", slot_troop_leaded_party),
+         (party_is_active, ":leaded_party"),
+         (party_get_attached_to, ":leaded_party_attached", ":leaded_party"),
+         (eq, ":leaded_party_attached", ":venue"),
+
+         (assign, ":relation_booster", 1),
+         (call_script, "script_troop_change_relation_with_troop", "trp_player", ":troop_no", ":relation_booster"),
+
+         (val_add, "$total_feast_changes", ":relation_booster"),
+         (try_end),
+
+         (try_end),
+     ]),
   (24,
    []),
   (24,
