@@ -13913,6 +13913,12 @@ scripts = [
      (try_begin),
        (is_between, ":party_no", centers_begin, centers_end),
        (context_menu_add_item, "@View notes", 1),
+        #zs:context_menu_relation
+        (try_begin),
+            (neg|is_between, ":party_no", castles_begin, castles_end),
+            (party_get_slot, reg1, ":party_no", slot_center_player_relation),
+            (context_menu_add_item, "@Relation: {reg1}", 99),
+        (try_end),
      (else_try),
        (party_get_num_companion_stacks, ":num_stacks", ":party_no"),
        (gt, ":num_stacks", 0),
