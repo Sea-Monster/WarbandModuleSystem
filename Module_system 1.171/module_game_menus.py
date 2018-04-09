@@ -7672,7 +7672,27 @@ game_menus = [
       ("village_reports",[(eq, "$cheat_mode", 1),], "{!}CHEAT! Show reports.",
        [(jump_to_menu,"mnu_center_reports"),
            ]),
-      ("village_leave",[],"Leave...",[(change_screen_return,0)]),
+#zs:meet_with_village_elder_or_guild_master_menu
+        ("village_elder_meeting", [(neg | party_slot_eq, "$current_town", slot_village_state, svs_looted),
+                                   (neg | party_slot_eq, "$current_town", slot_village_state, svs_being_raided),
+                                   (neg | party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1), ]
+         , "Meet with the Village Elder.",
+         [
+             (try_begin),
+             (call_script, "script_cf_enter_center_location_bandit_check"),
+             (else_try),
+             (modify_visitors_at_site, "scn_conversation_scene"),
+             (reset_visitors),
+             (set_visitor, 0, "trp_player"),
+             (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
+             (set_visitor, 11, ":village_elder_troop"),
+             (set_jump_mission, "mt_conversation_encounter"),
+             (jump_to_scene, "scn_conversation_scene"),
+             (change_screen_map_conversation, ":village_elder_troop"),
+             (try_end),
+         ]),
+
+        ("village_leave",[],"Leave...",[(change_screen_return,0)]),
       
     ],
   ),
@@ -9594,7 +9614,23 @@ game_menus = [
              (jump_to_menu,"mnu_town_trade"),
            (try_end),
           ]),
-
+        #zs:meet_with_village_elder_or_guild_master_menu
+        ("guild_master_meeting", [(party_slot_eq, "$current_town", slot_party_type, spt_town)],
+        "Meet with the Guild Master.",
+        [
+         (try_begin),
+           (call_script, "script_cf_enter_center_location_bandit_check"),
+         (else_try),
+           (modify_visitors_at_site, "scn_conversation_scene"),
+           (reset_visitors),
+           (set_visitor, 0, "trp_player"),
+           (party_get_slot, ":guild_master_troop", "$current_town", slot_town_elder),
+           (set_visitor, 11, ":guild_master_troop"),
+           (set_jump_mission, "mt_conversation_encounter"),
+           (jump_to_scene, "scn_conversation_scene"),
+           (change_screen_map_conversation, ":guild_master_troop"),
+         (try_end),
+        ]),
       ("walled_center_manage",
       [
         (neg|party_slot_eq, "$current_town", slot_village_state, svs_under_siege),

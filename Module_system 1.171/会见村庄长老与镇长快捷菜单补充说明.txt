@@ -1,0 +1,4 @@
+languages\cn_s\game_menus.csv末尾添加：
+(也可能是其他路径，例如mac上的steam版，路径为/Library/Application Support/Steam/steamapps/common/MountBlade Warband/Modules/Native/languages/cns/game_menus.csv)
+mno_village_elder_meeting|会 见 村 庄 长 老。
+mno_guild_master_meeting|会 见 镇 长。
