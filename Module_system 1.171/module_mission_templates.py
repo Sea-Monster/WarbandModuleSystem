@@ -2514,6 +2514,23 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 
+      (ti_on_agent_killed_or_wounded, 0, 0, [],
+       [
+        (store_trigger_param_1, ":dead_agent_no"),
+        #(store_trigger_param_2, ":killer_agent_no"),
+        (store_trigger_param_3, ":is_wounded"),
+
+        (try_begin),
+          (ge, ":dead_agent_no", 0),
+          (neg|agent_is_ally, ":dead_agent_no"),
+          (agent_is_human, ":dead_agent_no"),
+          (agent_get_troop_id, ":dead_agent_troop_id", ":dead_agent_no"),
+          (party_add_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1),
+          (eq, ":is_wounded", 1),
+          (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1),
+        (try_end),
+       ]),
+
       (ti_question_answered, 0, 0, [],
        [(store_trigger_param_1,":answer"),
         (eq,":answer",0),
