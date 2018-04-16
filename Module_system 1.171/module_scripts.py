@@ -28553,7 +28553,18 @@ scripts = [
       
       (assign, "$routed_party_added", 0), #new
       (party_clear, "p_total_enemy_casualties"), #new
-      
+
+        ## CC add wounded troops of enemy to p_total_enemy_casualties
+      (party_get_num_companion_stacks, ":num_stacks", "p_collective_enemy"),
+      (try_for_range, ":stack_no", 0, ":num_stacks"),
+        (party_stack_get_troop_id, ":stack_troop", "p_collective_enemy", ":stack_no"),
+        (party_stack_get_num_wounded, ":stack_wounded_size", "p_collective_enemy", ":stack_no"),
+        (gt, ":stack_wounded_size", 0),
+        (party_add_members, "p_total_enemy_casualties", ":stack_troop", ":stack_wounded_size"),
+        (party_wound_members, "p_total_enemy_casualties", ":stack_troop", ":stack_wounded_size"),
+      (try_end),
+        ## CC
+
 #      (try_begin),
 #        (gt, "$g_ally_party", 0),
 #        (call_script, "script_party_copy", "p_ally_party_backup", "p_collective_ally"),
